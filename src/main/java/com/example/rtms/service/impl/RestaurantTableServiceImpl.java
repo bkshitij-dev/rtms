@@ -53,4 +53,14 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
     public void delete(Long id) {
         restaurantTableRepository.deleteById(id);
     }
+
+    @Override
+    public Long getTableFitForPax(Integer pax) {
+        return restaurantTableMapper.getTableFitForPax(pax);
+    }
+
+    @Override
+    public void updateStatus(Long id, String status) {
+        restaurantTableMapper.updateStatus(id, status);
+    }
 }

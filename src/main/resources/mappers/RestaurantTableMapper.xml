@@ -30,4 +30,19 @@
         active = #{request.active}
         WHERE id = #{id}
     </update>
+
+    <select id="getTableFitForPax" resultType="java.lang.Long">
+        SELECT rt.id
+        FROM restaurant_tables rt
+        WHERE rt.seating_capacity >= #{pax}
+        AND rt.status = 'AVAILABLE'
+        ORDER BY rt.seating_capacity ASC
+        LIMIT 1
+    </select>
+
+    <update id = "updateStatus">
+        UPDATE restaurant_tables
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
 </mapper>

@@ -9,16 +9,21 @@ import lombok.NoArgsConstructor;
  * @author Kshitij
  * @created 01-Sep-2024
  */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RestaurantTableResponseDto {
+public class ReservationResponseDto {
 
     private Long id;
-    private String name;
-    private Integer seatingCapacity;
+    private String customerName;
+    private String customerEmail;
+    private String customerContact;
+    private Integer pax;
     private String status;
     private boolean active;
+    private RestaurantTableResponseDto table;
 
 }
+

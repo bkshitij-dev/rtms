@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.rtms.mapper.ReservationMapper">
+    <select id="list" resultType="com.example.rtms.dto.response.ReservationResponseDto">
+        SELECT
+        r.id as id,
+        r.customer_name as customerName,
+        r.customer_email as customerEmail,
+        r.customer_contact as customerContact,
+        r.pax as pax,
+        r.status as status,
+        r.active as active
+        FROM reservations r
+    </select>
+
+    <select id="get" resultType="com.example.rtms.dto.response.ReservationResponseDto">
+        SELECT
+        r.id as id,
+        r.customer_name as customerName,
+        r.customer_email as customerEmail,
+        r.customer_contact as customerContact,
+        r.pax as pax,
+        r.status as status,
+        r.active as active
+        FROM reservations r
+        WHERE r.id = #{id}
+    </select>
+
+    <update id = "update">
+        UPDATE reservations
+        SET customer_name = #{request.customerName},
+            customer_email = #{request.customerEmail},
+            customer_contact = #{request.customerContact},
+            pax = #{request.pax},
+            status = #{request.status},
+            active = #{request.active}
+        WHERE id = #{id}
+    </update>
+</mapper>

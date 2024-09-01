@@ -2,6 +2,7 @@ package com.example.rtms.service;
 
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
 import com.example.rtms.dto.response.RestaurantTableResponseDto;
+import com.example.rtms.enums.TableStatus;
 
 import java.util.List;
 
@@ -20,4 +21,8 @@ public interface RestaurantTableService {
     void update(Long id, RestaurantTableRequestDto request);
 
     void delete(Long id);
+
+    Long getTableFitForPax(Integer pax);
+
+    void updateStatus(Long id, String status);
 }

@@ -19,4 +19,8 @@ public interface RestaurantTableMapper {
     RestaurantTableResponseDto get(@Param("id") Long id);
 
     void update(@Param("id") Long id, @Param("request") RestaurantTableRequestDto request);
+
+    Long getTableFitForPax(@Param("pax") Integer pax);
+
+    void updateStatus(@Param("id") Long id, @Param("status") String status);
 }
