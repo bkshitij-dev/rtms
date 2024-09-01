@@ -25,4 +25,6 @@ public interface ReservationService {
     void updateStatus(Long id, StatusUpdateRequestDto request);
 
     void delete(Long id);
+
+    void completeReservation();
 }

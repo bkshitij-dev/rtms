@@ -58,7 +58,7 @@ public class ReservationServiceImpl implements ReservationService {
                 .build();
         reservation.setRestaurantTable(RestaurantTable.builder().id(tableId).build());
         reservationRepository.save(reservation);
-        restaurantTableService.updateStatus(tableId, TableStatus.RESERVED.name());
+        restaurantTableService.updateStatus(tableId, TableStatus.OCCUPIED.name());
     }
 
     @Override
@@ -90,5 +90,14 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void delete(Long id) {
         reservationRepository.deleteById(id);
+    }
+
+    @Override
+    public void completeReservation() {
+        List<Reservation> reservations = reservationRepository.findAllTimeExceeded();
+        reservations.forEach(r -> {
+            updateStatus(r.getId(), StatusUpdateRequestDto.builder().status(ReservationStatus.COMPLETED.name())
+                    .build());
+        });
     }
 }
