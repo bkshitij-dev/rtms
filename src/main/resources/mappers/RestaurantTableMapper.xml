@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.rtms.mapper.RestaurantTableMapper">
+    <select id="list" resultType="com.example.rtms.dto.response.RestaurantTableResponseDto">
+        SELECT
+        rt.id as id,
+        rt.name as name,
+        rt.seating_capacity as seatingCapacity,
+        rt.status as status,
+        rt.active as active
+        FROM restaurant_tables rt
+    </select>
+
+    <select id="get" resultType="com.example.rtms.dto.response.RestaurantTableResponseDto">
+        SELECT
+        rt.id as id,
+        rt.name as name,
+        rt.seating_capacity as seatingCapacity,
+        rt.status as status,
+        rt.active as active
+        FROM restaurant_tables rt
+        WHERE rt.id = #{id}
+    </select>
+
+    <update id = "update">
+        UPDATE restaurant_tables
+        SET name = #{request.name},
+        seating_capacity = #{request.seatingCapacity},
+        status = #{request.status},
+        active = #{request.active}
+        WHERE id = #{id}
+    </update>
+</mapper>
