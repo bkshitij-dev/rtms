@@ -73,6 +73,11 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
     }
 
     @Override
+    public void updateStatusFromReservation(Long reservationId, String status) {
+        restaurantTableMapper.updateStatusFromReservation(reservationId, status);
+    }
+
+    @Override
     public String getNearestFreeTable(LocalDateTime requestedTime, Integer pax) {
         Timestamp timestamp = Timestamp.valueOf(requestedTime);
         String timeString = restaurantTableMapper.getNearestFreeTable(timestamp, pax);

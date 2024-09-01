@@ -1,6 +1,7 @@
 package com.example.rtms.service.impl;
 
 import com.example.rtms.dto.request.ReservationRequestDto;
+import com.example.rtms.dto.request.StatusUpdateRequestDto;
 import com.example.rtms.dto.response.ReservationResponseDto;
 import com.example.rtms.enums.ReservationStatus;
 import com.example.rtms.enums.TableStatus;
@@ -73,6 +74,17 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void update(Long id, ReservationRequestDto request) {
         reservationMapper.update(id, request);
+    }
+
+    @Override
+    @Transactional
+    public void updateStatus(Long id, StatusUpdateRequestDto request) {
+        reservationMapper.updateStatus(id, request.getStatus());
+        if (request.getStatus().equals(ReservationStatus.CANCELLED.name())
+                || request.getStatus().equals(ReservationStatus.NO_SHOW.name())
+                || request.getStatus().equals(ReservationStatus.COMPLETED.name())) {
+            restaurantTableService.updateStatusFromReservation(id, TableStatus.AVAILABLE.name());
+        }
     }
 
     @Override

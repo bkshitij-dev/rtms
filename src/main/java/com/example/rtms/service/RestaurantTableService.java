@@ -28,5 +28,7 @@ public interface RestaurantTableService {
 
     void updateStatus(Long id, String status);
 
+    void updateStatusFromReservation(Long reservationId, String status);
+
     String getNearestFreeTable(LocalDateTime requestedTime, Integer pax);
 }

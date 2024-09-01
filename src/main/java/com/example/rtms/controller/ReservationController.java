@@ -2,6 +2,7 @@ package com.example.rtms.controller;
 
 import com.example.rtms.constant.AppConstants;
 import com.example.rtms.dto.request.ReservationRequestDto;
+import com.example.rtms.dto.request.StatusUpdateRequestDto;
 import com.example.rtms.dto.response.ApiResponse;
 import com.example.rtms.service.ReservationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,6 +50,14 @@ public class ReservationController extends BaseController {
     public ResponseEntity<ApiResponse> update(@PathVariable("id") Long id,
                                               @RequestBody ReservationRequestDto request) {
         reservationService.update(id, request);
+        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_UPDATE), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Update existing reservation status")
+    @PutMapping("/{id}/updateStatus")
+    public ResponseEntity<ApiResponse> updateStatus(@PathVariable("id") Long id,
+                                              @RequestBody StatusUpdateRequestDto request) {
+        reservationService.updateStatus(id, request);
         return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_UPDATE), HttpStatus.OK);
     }
 

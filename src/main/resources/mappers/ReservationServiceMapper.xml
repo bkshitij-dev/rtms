@@ -36,4 +36,10 @@
             active = #{request.active}
         WHERE id = #{id}
     </update>
+
+    <update id = "updateStatus">
+        UPDATE reservations
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
 </mapper>

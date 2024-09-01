@@ -12,12 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReservationRequestDto {
+public class StatusUpdateRequestDto {
 
-    private String customerName;
-    private String customerEmail;
-    private String customerContact;
-    private Integer pax;
-    private String reservationRequestTime;
     private String status;
 }

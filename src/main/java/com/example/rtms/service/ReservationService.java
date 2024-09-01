@@ -2,6 +2,7 @@ package com.example.rtms.service;
 
 import com.example.rtms.dto.request.ReservationRequestDto;
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
+import com.example.rtms.dto.request.StatusUpdateRequestDto;
 import com.example.rtms.dto.response.ReservationResponseDto;
 import com.example.rtms.dto.response.RestaurantTableResponseDto;
 
@@ -20,6 +21,8 @@ public interface ReservationService {
     ReservationResponseDto get(Long id);
 
     void update(Long id, ReservationRequestDto request);
+
+    void updateStatus(Long id, StatusUpdateRequestDto request);
 
     void delete(Long id);
 }

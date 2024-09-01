@@ -88,4 +88,12 @@
         SET status = #{status}
         WHERE id = #{id}
     </update>
+
+    <update id = "updateStatusFromReservation">
+        UPDATE restaurant_tables
+        SET status = #{status}
+        FROM reservations r
+        WHERE restaurant_tables.id = r.restaurant_table_id
+        AND r.id = #{reservationId}
+    </update>
 </mapper>

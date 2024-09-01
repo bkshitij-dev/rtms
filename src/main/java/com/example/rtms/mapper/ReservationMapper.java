@@ -21,4 +21,6 @@ public interface ReservationMapper {
     ReservationResponseDto get(@Param("id") Long id);
 
     void update(@Param("id") Long id, @Param("request") ReservationRequestDto request);
+
+    void updateStatus(@Param("id") Long id, @Param("status") String status);
 }
