@@ -18,4 +18,5 @@ public class ReservationRequestDto {
     private String customerEmail;
     private String customerContact;
     private Integer pax;
+    private String reservationRequestTime;
 }

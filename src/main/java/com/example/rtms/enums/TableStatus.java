@@ -10,3 +10,4 @@ public enum TableStatus {
     RESERVED,
     OCCUPIED
 }
+

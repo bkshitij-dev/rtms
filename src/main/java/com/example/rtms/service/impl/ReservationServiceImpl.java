@@ -10,6 +10,7 @@ import com.example.rtms.model.RestaurantTable;
 import com.example.rtms.repository.ReservationRepository;
 import com.example.rtms.service.ReservationService;
 import com.example.rtms.service.RestaurantTableService;
+import com.example.rtms.util.DateUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,14 +33,18 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @Transactional
     public void create(ReservationRequestDto request) {
+        Long tableId = restaurantTableService.getTableFitForPax(request.getPax());
+//        if (tableId == null) {
+//
+//        }
         Reservation reservation = Reservation.builder()
                 .customerName(request.getCustomerName())
                 .customerEmail(request.getCustomerEmail())
                 .customerContact(request.getCustomerContact())
                 .pax(request.getPax())
                 .status(ReservationStatus.CONFIRMED)
+                .reservationRequestTime(DateUtil.getDateTime(request.getReservationRequestTime()))
                 .build();
-        Long tableId = restaurantTableService.getTableFitForPax(request.getPax());
         reservation.setRestaurantTable(RestaurantTable.builder().id(tableId).build());
         reservationRepository.save(reservation);
         restaurantTableService.updateStatus(tableId, TableStatus.RESERVED.name());

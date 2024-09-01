@@ -12,6 +12,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -44,6 +47,15 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "restaurant_table_id", nullable = false, foreignKey = @ForeignKey(name = "fk_reservation_restauranttable"))
     private RestaurantTable restaurantTable;
+
+    @Column(name = "reservation_request_time", nullable = false)
+    private LocalDateTime reservationRequestTime;
+
+    @Column(name = "reservation_start_time")
+    private LocalDateTime reservationStartTime;
+
+    @Column(name = "reservation_end_time")
+    private LocalDateTime reservationEndTime;
 
     @Column(name = "active")
     private boolean active;

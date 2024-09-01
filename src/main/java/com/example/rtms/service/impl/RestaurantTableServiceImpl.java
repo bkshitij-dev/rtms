@@ -1,5 +1,6 @@
 package com.example.rtms.service.impl;
 
+import com.example.rtms.dto.request.ReservationRequestDto;
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
 import com.example.rtms.dto.response.RestaurantTableResponseDto;
 import com.example.rtms.enums.TableStatus;
@@ -10,6 +11,7 @@ import com.example.rtms.service.RestaurantTableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /*
@@ -62,5 +64,11 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
     @Override
     public void updateStatus(Long id, String status) {
         restaurantTableMapper.updateStatus(id, status);
+    }
+
+    @Override
+    public Long getNearestFreeTable(ReservationRequestDto request) {
+        Timestamp timestamp = Timestamp.valueOf(request.getReservationRequestTime());
+        return restaurantTableMapper.getNearestFreeTable(timestamp, request.getPax());
     }
 }

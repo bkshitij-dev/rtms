@@ -40,6 +40,56 @@
         LIMIT 1
     </select>
 
+    <select id="getNearestFreeTable" resultType="java.lang.Long">
+        <![CDATA[
+        WITH future_time AS (
+            SELECT
+                #{timestamp} AS reference_time
+        ),
+        table_availability AS (
+            SELECT
+                rt.id AS table_id,
+                rt.seating_capacity,
+                COALESCE(
+                    MIN(
+                        CASE
+                            WHEN to_char(r.reservation_end_time, 'yyyy-MM-dd HH:mm') > ft.reference_time THEN to_char(r.reservation_end_time, 'yyyy-MM-dd HH:mm')
+                            ELSE ft.reference_time
+                        END
+                    ),
+                    ft.reference_time
+                ) AS earliest_available_time
+            FROM
+                restaurant_tables rt
+            CROSS JOIN
+                future_time ft
+            LEFT JOIN
+                reservations r ON rt.id = r.restaurant_table_id
+                AND r.status IN ('RESERVED', 'OCCUPIED')
+                AND to_char(r.reservation_end_time, 'yyyy-MM-dd HH:mm') > ft.reference_time
+            GROUP BY
+                rt.id, rt.seating_capacity, ft.reference_time
+        )
+        SELECT
+            table_id
+        FROM
+            table_availability
+        WHERE
+            seating_capacity >= #{pax}
+            AND (
+                earliest_available_time <= #{timestamp}
+                OR table_id NOT IN (
+                    SELECT DISTINCT restaurant_table_id
+                    FROM reservations
+                    WHERE reservation_end_time > #{timestamp}
+            ))
+        ORDER BY
+            earliest_available_time ASC
+        LIMIT 1
+    ]]>
+    </select>
+
+
     <update id = "updateStatus">
         UPDATE restaurant_tables
         SET status = #{status}

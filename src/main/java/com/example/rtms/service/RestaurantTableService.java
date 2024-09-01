@@ -1,5 +1,6 @@
 package com.example.rtms.service;
 
+import com.example.rtms.dto.request.ReservationRequestDto;
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
 import com.example.rtms.dto.response.RestaurantTableResponseDto;
 import com.example.rtms.enums.TableStatus;
@@ -25,4 +26,6 @@ public interface RestaurantTableService {
     Long getTableFitForPax(Integer pax);
 
     void updateStatus(Long id, String status);
+
+    Long getNearestFreeTable(ReservationRequestDto request);
 }

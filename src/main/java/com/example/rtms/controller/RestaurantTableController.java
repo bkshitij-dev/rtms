@@ -1,6 +1,7 @@
 package com.example.rtms.controller;
 
 import com.example.rtms.constant.AppConstants;
+import com.example.rtms.dto.request.ReservationRequestDto;
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
 import com.example.rtms.dto.response.ApiResponse;
 import com.example.rtms.service.RestaurantTableService;
@@ -57,5 +58,12 @@ public class RestaurantTableController extends BaseController {
     public ResponseEntity<ApiResponse> delete(@PathVariable("id") Long id) {
         restaurantTableService.delete(id);
         return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_REMOVE), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Get nearest free table")
+    @PostMapping("/nearest-free")
+    public ResponseEntity<ApiResponse> getNearestFreeTable(@RequestBody ReservationRequestDto request) {
+        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_RETRIEVE,
+                restaurantTableService.getNearestFreeTable(request)), HttpStatus.OK);
     }
 }
