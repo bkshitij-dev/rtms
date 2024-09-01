@@ -26,5 +26,5 @@ public interface RestaurantTableMapper {
 
     void updateStatus(@Param("id") Long id, @Param("status") String status);
 
-    Long getNearestFreeTable(@Param("timestamp") Timestamp timestamp, @Param("pax") Integer pax);
+    String getNearestFreeTable(@Param("timestamp") Timestamp timestamp, @Param("pax") Integer pax);
 }

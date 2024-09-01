@@ -8,10 +8,12 @@ import com.example.rtms.mapper.RestaurantTableMapper;
 import com.example.rtms.model.RestaurantTable;
 import com.example.rtms.repository.RestaurantTableRepository;
 import com.example.rtms.service.RestaurantTableService;
+import com.example.rtms.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /*
@@ -28,10 +30,14 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
 
     @Override
     public void create(RestaurantTableRequestDto request) {
+        TableStatus status = TableStatus.AVAILABLE;
+        if (request.getStatus() != null) {
+            status = TableStatus.valueOf(request.getStatus());
+        }
         RestaurantTable restaurantTable = RestaurantTable.builder()
                 .name(request.getName())
                 .seatingCapacity(request.getSeatingCapacity())
-                .status(TableStatus.valueOf(request.getStatus()))
+                .status(status)
                 .build();
         restaurantTableRepository.save(restaurantTable);
     }
@@ -67,8 +73,10 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
     }
 
     @Override
-    public Long getNearestFreeTable(ReservationRequestDto request) {
-        Timestamp timestamp = Timestamp.valueOf(request.getReservationRequestTime());
-        return restaurantTableMapper.getNearestFreeTable(timestamp, request.getPax());
+    public String getNearestFreeTable(LocalDateTime requestedTime, Integer pax) {
+        Timestamp timestamp = Timestamp.valueOf(requestedTime);
+        String timeString = restaurantTableMapper.getNearestFreeTable(timestamp, pax);
+        return DateUtil.getTimeDifference(DateUtil.getDateTimeString(requestedTime, DateUtil.ISO_FULL_DATE_TIME_FORMAT),
+                timeString);
     }
 }

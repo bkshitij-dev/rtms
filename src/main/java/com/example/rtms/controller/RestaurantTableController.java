@@ -5,12 +5,15 @@ import com.example.rtms.dto.request.ReservationRequestDto;
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
 import com.example.rtms.dto.response.ApiResponse;
 import com.example.rtms.service.RestaurantTableService;
+import com.example.rtms.util.DateUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 /*
  * @author Kshitij
@@ -63,7 +66,11 @@ public class RestaurantTableController extends BaseController {
     @Operation(summary = "Get nearest free table")
     @PostMapping("/nearest-free")
     public ResponseEntity<ApiResponse> getNearestFreeTable(@RequestBody ReservationRequestDto request) {
+        LocalDateTime dateTime = LocalDateTime.now();
+        if (request.getReservationRequestTime() != null) {
+            dateTime = DateUtil.getDateTime(request.getReservationRequestTime());
+        }
         return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_RETRIEVE,
-                restaurantTableService.getNearestFreeTable(request)), HttpStatus.OK);
+                restaurantTableService.getNearestFreeTable(dateTime, request.getPax())), HttpStatus.OK);
     }
 }

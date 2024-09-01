@@ -40,11 +40,11 @@
         LIMIT 1
     </select>
 
-    <select id="getNearestFreeTable" resultType="java.lang.Long">
+    <select id="getNearestFreeTable" resultType="java.lang.String">
         <![CDATA[
         WITH future_time AS (
             SELECT
-                #{timestamp} AS reference_time
+                #{timestamp}::timestamp AS reference_time
         ),
         table_availability AS (
             SELECT
@@ -53,7 +53,7 @@
                 COALESCE(
                     MIN(
                         CASE
-                            WHEN to_char(r.reservation_end_time, 'yyyy-MM-dd HH:mm') > ft.reference_time THEN to_char(r.reservation_end_time, 'yyyy-MM-dd HH:mm')
+                            WHEN r.reservation_end_time > ft.reference_time THEN r.reservation_end_time
                             ELSE ft.reference_time
                         END
                     ),
@@ -65,24 +65,17 @@
                 future_time ft
             LEFT JOIN
                 reservations r ON rt.id = r.restaurant_table_id
-                AND r.status IN ('RESERVED', 'OCCUPIED')
-                AND to_char(r.reservation_end_time, 'yyyy-MM-dd HH:mm') > ft.reference_time
+                AND r.status IN ('CONFIRMED', 'ARRIVED', 'NO_SHOW', 'COMPLETED', 'CANCELLED')
+                AND r.reservation_end_time > ft.reference_time
             GROUP BY
                 rt.id, rt.seating_capacity, ft.reference_time
         )
         SELECT
-            table_id
+            earliest_available_time
         FROM
             table_availability
         WHERE
             seating_capacity >= #{pax}
-            AND (
-                earliest_available_time <= #{timestamp}
-                OR table_id NOT IN (
-                    SELECT DISTINCT restaurant_table_id
-                    FROM reservations
-                    WHERE reservation_end_time > #{timestamp}
-            ))
         ORDER BY
             earliest_available_time ASC
         LIMIT 1
