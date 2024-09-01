@@ -56,7 +56,4 @@ public class Reservation {
 
     @Column(name = "reservation_end_time")
     private LocalDateTime reservationEndTime;
-
-    @Column(name = "active")
-    private boolean active;
 }

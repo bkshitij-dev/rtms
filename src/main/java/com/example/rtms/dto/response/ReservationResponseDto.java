@@ -22,8 +22,6 @@ public class ReservationResponseDto {
     private String customerContact;
     private Integer pax;
     private String status;
-    private boolean active;
-    private RestaurantTableResponseDto table;
 
 }
 

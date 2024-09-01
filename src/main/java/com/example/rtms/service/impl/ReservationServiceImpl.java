@@ -100,4 +100,9 @@ public class ReservationServiceImpl implements ReservationService {
                     .build());
         });
     }
+
+    @Override
+    public long count() {
+        return reservationRepository.count();
+    }
 }

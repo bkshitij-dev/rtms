@@ -36,7 +36,4 @@ public class RestaurantTable {
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private TableStatus status;
-
-    @Column(name = "active")
-    private boolean active;
 }

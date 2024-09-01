@@ -1,6 +1,5 @@
 package com.example.rtms.service.impl;
 
-import com.example.rtms.dto.request.ReservationRequestDto;
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
 import com.example.rtms.dto.response.RestaurantTableResponseDto;
 import com.example.rtms.enums.TableStatus;
@@ -83,5 +82,10 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
         String timeString = restaurantTableMapper.getNearestFreeTable(timestamp, pax);
         return DateUtil.getTimeDifference(DateUtil.getDateTimeString(requestedTime, DateUtil.ISO_FULL_DATE_TIME_FORMAT),
                 timeString);
+    }
+
+    @Override
+    public long count() {
+        return restaurantTableRepository.count();
     }
 }

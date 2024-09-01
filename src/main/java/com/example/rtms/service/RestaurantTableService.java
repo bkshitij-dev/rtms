@@ -1,9 +1,7 @@
 package com.example.rtms.service;
 
-import com.example.rtms.dto.request.ReservationRequestDto;
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
 import com.example.rtms.dto.response.RestaurantTableResponseDto;
-import com.example.rtms.enums.TableStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,4 +29,6 @@ public interface RestaurantTableService {
     void updateStatusFromReservation(Long reservationId, String status);
 
     String getNearestFreeTable(LocalDateTime requestedTime, Integer pax);
+
+    long count();
 }

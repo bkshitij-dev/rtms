@@ -8,8 +8,7 @@
         r.customer_email as customerEmail,
         r.customer_contact as customerContact,
         r.pax as pax,
-        r.status as status,
-        r.active as active
+        r.status as status
         FROM reservations r
     </select>
 
@@ -20,8 +19,7 @@
         r.customer_email as customerEmail,
         r.customer_contact as customerContact,
         r.pax as pax,
-        r.status as status,
-        r.active as active
+        r.status as status
         FROM reservations r
         WHERE r.id = #{id}
     </select>
@@ -32,8 +30,7 @@
             customer_email = #{request.customerEmail},
             customer_contact = #{request.customerContact},
             pax = #{request.pax},
-            status = #{request.status},
-            active = #{request.active}
+            status = #{request.status}
         WHERE id = #{id}
     </update>
 

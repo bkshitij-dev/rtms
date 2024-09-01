@@ -1,10 +1,8 @@
 package com.example.rtms.service;
 
 import com.example.rtms.dto.request.ReservationRequestDto;
-import com.example.rtms.dto.request.RestaurantTableRequestDto;
 import com.example.rtms.dto.request.StatusUpdateRequestDto;
 import com.example.rtms.dto.response.ReservationResponseDto;
-import com.example.rtms.dto.response.RestaurantTableResponseDto;
 
 import java.util.List;
 
@@ -27,4 +25,6 @@ public interface ReservationService {
     void delete(Long id);
 
     void completeReservation();
+
+    long count();
 }

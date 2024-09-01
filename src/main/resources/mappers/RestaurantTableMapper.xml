@@ -6,8 +6,7 @@
         rt.id as id,
         rt.name as name,
         rt.seating_capacity as seatingCapacity,
-        rt.status as status,
-        rt.active as active
+        rt.status as status
         FROM restaurant_tables rt
     </select>
 
@@ -16,8 +15,7 @@
         rt.id as id,
         rt.name as name,
         rt.seating_capacity as seatingCapacity,
-        rt.status as status,
-        rt.active as active
+        rt.status as status
         FROM restaurant_tables rt
         WHERE rt.id = #{id}
     </select>
@@ -26,8 +24,7 @@
         UPDATE restaurant_tables
         SET name = #{request.name},
         seating_capacity = #{request.seatingCapacity},
-        status = #{request.status},
-        active = #{request.active}
+        status = #{request.status}
         WHERE id = #{id}
     </update>
 

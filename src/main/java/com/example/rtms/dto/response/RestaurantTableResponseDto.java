@@ -19,6 +19,5 @@ public class RestaurantTableResponseDto {
     private String name;
     private Integer seatingCapacity;
     private String status;
-    private boolean active;
 
 }
