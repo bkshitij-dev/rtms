@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,7 @@ public class RestaurantTableController extends BaseController {
     private final RestaurantTableService restaurantTableService;
 
     @Operation(summary = "Create new restaurant table")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<ApiResponse> create(@RequestBody RestaurantTableRequestDto request) {
         restaurantTableService.create(request);
@@ -50,6 +52,7 @@ public class RestaurantTableController extends BaseController {
 
     @Operation(summary = "Update existing restaurant table")
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse> update(@PathVariable("id") Long id,
                                               @RequestBody RestaurantTableRequestDto request) {
         restaurantTableService.update(id, request);
@@ -58,6 +61,7 @@ public class RestaurantTableController extends BaseController {
 
     @Operation(summary = "Remove existing restaurant table")
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse> delete(@PathVariable("id") Long id) {
         restaurantTableService.delete(id);
         return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_REMOVE), HttpStatus.OK);

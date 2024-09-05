@@ -1,13 +1,20 @@
 package com.example.rtms;
 
+import com.example.rtms.dto.request.RegisterRequestDto;
 import com.example.rtms.dto.request.ReservationRequestDto;
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
+import com.example.rtms.dto.request.RoleRequestDto;
+import com.example.rtms.enums.RoleType;
 import com.example.rtms.service.ReservationService;
 import com.example.rtms.service.RestaurantTableService;
+import com.example.rtms.service.RoleService;
+import com.example.rtms.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /*
  * @author Kshitij
@@ -17,17 +24,62 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DataInitializer implements ApplicationRunner {
 
+    private final RoleService roleService;
+    private final UserService userService;
     private final RestaurantTableService restaurantTableService;
     private final ReservationService reservationService;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        if (roleService.count() <= 0) {
+            createRoles();
+        }
+        if (userService.count() <= 0) {
+            createUsers();
+        }
         if (restaurantTableService.count() <= 0) {
             createRestaurantTables();
         }
         if (reservationService.count() <= 0) {
             createReservations();
         }
+    }
+
+    private void createRoles() {
+        RoleRequestDto adminRole = RoleRequestDto.builder().name(RoleType.ROLE_ADMIN.name()).build();
+        roleService.create(adminRole);
+
+        RoleRequestDto staffRole = RoleRequestDto.builder().name(RoleType.ROLE_STAFF.name()).build();
+        roleService.create(staffRole);
+
+        RoleRequestDto customerRole = RoleRequestDto.builder().name(RoleType.ROLE_CUSTOMER.name()).build();
+        roleService.create(customerRole);
+    }
+
+    private void createUsers() {
+        RegisterRequestDto admin = RegisterRequestDto.builder()
+                .name("Admin")
+                .username("admin")
+                .email("admin@app.com")
+                .password("Admin@123")
+                .build();
+        userService.create(admin, List.of(RoleType.ROLE_ADMIN, RoleType.ROLE_STAFF));
+
+        RegisterRequestDto staff = RegisterRequestDto.builder()
+                .name("Staff")
+                .username("staff")
+                .email("staff@app.com")
+                .password("Staff@123")
+                .build();
+        userService.create(staff, List.of(RoleType.ROLE_STAFF));
+
+        RegisterRequestDto customer = RegisterRequestDto.builder()
+                .name("Customer")
+                .username("customer")
+                .email("customer@app.com")
+                .password("Customer@123")
+                .build();
+        userService.create(customer, List.of(RoleType.ROLE_CUSTOMER));
     }
 
     private void createRestaurantTables() {
