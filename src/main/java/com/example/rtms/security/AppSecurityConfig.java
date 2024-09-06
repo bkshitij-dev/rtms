@@ -27,7 +27,10 @@ public class AppSecurityConfig {
     private JwtAuthenticationFilter authenticationFilter;
 
     private final String[] WHITE_LIST_APIS = new String[] {
-            "/api/v1/auth/**"
+            "/api/v1/auth/**",
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
     };
 
     @Bean

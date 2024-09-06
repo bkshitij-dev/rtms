@@ -67,9 +67,9 @@ public class RestaurantTableController extends BaseController {
         return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_REMOVE), HttpStatus.OK);
     }
 
-    @Operation(summary = "Get nearest free table")
-    @PostMapping("/nearest-free")
-    public ResponseEntity<ApiResponse> getNearestFreeTable(@RequestBody ReservationRequestDto request) {
+    @Operation(summary = "Get earliest free table")
+    @PostMapping("/earliest-free")
+    public ResponseEntity<ApiResponse> getEarliestFreeTable(@RequestBody ReservationRequestDto request) {
         LocalDateTime dateTime = LocalDateTime.now();
         if (request.getReservationRequestTime() != null) {
             dateTime = DateUtil.getDateTime(request.getReservationRequestTime());
