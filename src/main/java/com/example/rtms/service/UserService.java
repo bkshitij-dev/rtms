@@ -19,8 +19,7 @@ public interface UserService {
 
     Long count();
 
-    void toggleStatus(Long id, ActiveInactiveRequestDto request);
+    void toggleActive(Long id, ActiveInactiveRequestDto request);
 
-//    List<StaffResponseDto> listStaff(boolean active);
     List<StaffResponseDto> listStaff(Boolean active);
 }

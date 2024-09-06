@@ -74,8 +74,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void toggleStatus(Long id, ActiveInactiveRequestDto request) {
-        userMapper.toggleStatus(id, request.isActive());
+    public void toggleActive(Long id, ActiveInactiveRequestDto request) {
+        userMapper.toggleActive(id, request.isActive());
     }
 
     @Override

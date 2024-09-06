@@ -32,12 +32,12 @@ public class UserController extends BaseController {
         return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_SAVE), HttpStatus.OK);
     }
 
-    @Operation(summary = "Toggle Status")
-    @PutMapping("/{id}/toggle-status")
+    @Operation(summary = "Activate/Deactivate users")
+    @PutMapping("/{id}/toggle-active")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse> toggleStatus(@PathVariable("id") Long id,
+    public ResponseEntity<ApiResponse> toggleActive(@PathVariable("id") Long id,
                                                     @RequestBody ActiveInactiveRequestDto request) {
-        userService.toggleStatus(id, request);
+        userService.toggleActive(id, request);
         return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_UPDATE), HttpStatus.OK);
     }
 

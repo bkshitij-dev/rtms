@@ -37,12 +37,12 @@ public class DataInitializer implements ApplicationRunner {
         if (userService.count() <= 0) {
             createUsers();
         }
-//        if (restaurantTableService.count() <= 0) {
-//            createRestaurantTables();
-//        }
-//        if (reservationService.count() <= 0) {
-//            createReservations();
-//        }
+        if (restaurantTableService.count() <= 0) {
+            createRestaurantTables();
+        }
+        if (reservationService.count() <= 0) {
+            createReservations();
+        }
     }
 
     private void createRoles() {

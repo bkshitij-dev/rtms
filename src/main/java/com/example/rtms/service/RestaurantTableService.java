@@ -1,5 +1,6 @@
 package com.example.rtms.service;
 
+import com.example.rtms.dto.request.ActiveInactiveRequestDto;
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
 import com.example.rtms.dto.response.RestaurantTableResponseDto;
 
@@ -21,6 +22,8 @@ public interface RestaurantTableService {
     void update(Long id, RestaurantTableRequestDto request);
 
     void delete(Long id);
+
+    void toggleActive(Long id, ActiveInactiveRequestDto request);
 
     Long getTableFitForPax(Integer pax);
 

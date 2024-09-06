@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    void toggleStatus(@Param("id") Long id, @Param("active") boolean active);
+    void toggleActive(@Param("id") Long id, @Param("active") boolean active);
 
     List<StaffResponseDto> listStaff(Boolean active);
 }

@@ -93,4 +93,10 @@
         WHERE restaurant_tables.id = r.restaurant_table_id
         AND r.id = #{reservationId}
     </update>
+
+    <update id = "toggleActive">
+        UPDATE restaurant_tables
+        SET active = #{active}
+        WHERE id = #{id}
+    </update>
 </mapper>

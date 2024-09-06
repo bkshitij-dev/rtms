@@ -1,6 +1,7 @@
 package com.example.rtms.controller;
 
 import com.example.rtms.constant.AppConstants;
+import com.example.rtms.dto.request.ActiveInactiveRequestDto;
 import com.example.rtms.dto.request.ReservationRequestDto;
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
 import com.example.rtms.dto.response.ApiResponse;
@@ -65,6 +66,15 @@ public class RestaurantTableController extends BaseController {
     public ResponseEntity<ApiResponse> delete(@PathVariable("id") Long id) {
         restaurantTableService.delete(id);
         return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_REMOVE), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Activate/Deactivate restaurant table")
+    @PutMapping("/{id}/toggle-active")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse> toggleActive(@PathVariable("id") Long id,
+                                                    @RequestBody ActiveInactiveRequestDto request) {
+        restaurantTableService.toggleActive(id, request);
+        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_UPDATE), HttpStatus.OK);
     }
 
     @Operation(summary = "Get earliest free table")
