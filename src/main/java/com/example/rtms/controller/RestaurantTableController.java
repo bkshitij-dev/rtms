@@ -1,6 +1,7 @@
 package com.example.rtms.controller;
 
 import com.example.rtms.constant.AppConstants;
+import com.example.rtms.dto.request.ActiveInactiveRequestDto;
 import com.example.rtms.dto.request.ReservationRequestDto;
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
 import com.example.rtms.dto.response.ApiResponse;
@@ -20,8 +21,8 @@ import java.time.LocalDateTime;
  * @author Kshitij
  * @created 01-Sep-2024
  */
-@RestController
 @Tag(name = "Restaurant Tables", description = "Apis related to Restaurant Tables")
+@RestController
 @RequestMapping("/api/v1/restaurant-tables")
 @RequiredArgsConstructor
 public class RestaurantTableController extends BaseController {
@@ -67,9 +68,18 @@ public class RestaurantTableController extends BaseController {
         return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_REMOVE), HttpStatus.OK);
     }
 
-    @Operation(summary = "Get nearest free table")
-    @PostMapping("/nearest-free")
-    public ResponseEntity<ApiResponse> getNearestFreeTable(@RequestBody ReservationRequestDto request) {
+    @Operation(summary = "Activate/Deactivate restaurant table")
+    @PutMapping("/{id}/toggle-active")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse> toggleActive(@PathVariable("id") Long id,
+                                                    @RequestBody ActiveInactiveRequestDto request) {
+        restaurantTableService.toggleActive(id, request);
+        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_UPDATE), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Get earliest free table")
+    @PostMapping("/earliest-free")
+    public ResponseEntity<ApiResponse> getEarliestFreeTable(@RequestBody ReservationRequestDto request) {
         LocalDateTime dateTime = LocalDateTime.now();
         if (request.getReservationRequestTime() != null) {
             dateTime = DateUtil.getDateTime(request.getReservationRequestTime());

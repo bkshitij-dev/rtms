@@ -1,10 +1,16 @@
 package com.example.rtms.config;
 
-import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.*;
+import io.swagger.v3.oas.models.tags.Tag;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.*;
 
 /*
  * @author Kshitij
@@ -26,6 +32,22 @@ public class OpenAPIConfig {
                 .contact(contact)
                 .description("This API exposes endpoints to Restaurant Table Management System");
 
-        return new OpenAPI().info(info);
+        return new OpenAPI().info(info)
+                .addSecurityItem(new SecurityRequirement().addList("RTMS"))
+                .components(new Components()
+                        .addSecuritySchemes("RTMS", new SecurityScheme()
+                                .name("RTMS")
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer").bearerFormat("JWT")));
+    }
+
+    @Bean
+    public GlobalOpenApiCustomizer sortTagsAlphabetically() {
+        return openAPI -> {
+            List<Tag> tags = openAPI.getTags();
+            if (tags != null) {
+                tags.sort(Comparator.comparing(Tag::getName));
+            }
+        };
     }
 }

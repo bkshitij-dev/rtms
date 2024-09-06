@@ -1,10 +1,13 @@
 package com.example.rtms.service.impl;
 
+import com.example.rtms.dto.request.ActiveInactiveRequestDto;
 import com.example.rtms.dto.request.LoginRequestDto;
 import com.example.rtms.dto.request.RegisterRequestDto;
 import com.example.rtms.dto.response.LoginResponseDto;
+import com.example.rtms.dto.response.StaffResponseDto;
 import com.example.rtms.enums.RoleType;
 import com.example.rtms.exception.AppException;
+import com.example.rtms.mapper.UserMapper;
 import com.example.rtms.model.User;
 import com.example.rtms.repository.UserRepository;
 import com.example.rtms.security.JwtTokenProvider;
@@ -30,6 +33,7 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private UserRepository userRepository;
     private RoleService roleService;
+    private UserMapper userMapper;
 
     @Override
     public LoginResponseDto login(LoginRequestDto request) {
@@ -67,5 +71,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long count() {
         return userRepository.count();
+    }
+
+    @Override
+    public void toggleActive(Long id, ActiveInactiveRequestDto request) {
+        userMapper.toggleActive(id, request.isActive());
+    }
+
+    @Override
+    public List<StaffResponseDto> listStaff(Boolean active) {
+        return userMapper.listStaff(active);
     }
 }

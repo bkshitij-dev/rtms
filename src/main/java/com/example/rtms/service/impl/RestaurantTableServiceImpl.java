@@ -1,8 +1,10 @@
 package com.example.rtms.service.impl;
 
+import com.example.rtms.dto.request.ActiveInactiveRequestDto;
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
 import com.example.rtms.dto.response.RestaurantTableResponseDto;
 import com.example.rtms.enums.TableStatus;
+import com.example.rtms.exception.AppException;
 import com.example.rtms.mapper.RestaurantTableMapper;
 import com.example.rtms.model.RestaurantTable;
 import com.example.rtms.repository.RestaurantTableRepository;
@@ -59,6 +61,14 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
     @Override
     public void delete(Long id) {
         restaurantTableRepository.deleteById(id);
+    }
+
+    @Override
+    public void toggleActive(Long id, ActiveInactiveRequestDto request) {
+        if (restaurantTableRepository.isOccupied(id)) {
+            throw new AppException("Table is occupied. Cannot deactivate.");
+        }
+        restaurantTableMapper.toggleActive(id, request.isActive());
     }
 
     @Override

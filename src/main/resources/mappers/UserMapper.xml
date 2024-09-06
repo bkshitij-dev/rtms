@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.rtms.mapper.UserMapper">
+    <update id = "toggleActive">
+        UPDATE users
+        SET active = #{active}
+        WHERE id = #{id}
+    </update>
+
+    <select id="listStaff" resultType="com.example.rtms.dto.response.StaffResponseDto">
+        SELECT
+        u.id as id,
+        u.name as name
+        FROM users u
+        INNER JOIN users_roles ur ON ur.user_id = u.id
+        INNER JOIN roles r ON r.id = ur.role_id
+        WHERE r.name = 'ROLE_STAFF'
+        AND u.id NOT IN (
+        SELECT ur.user_id
+        FROM users_roles ur
+        INNER JOIN roles r ON r.id = ur.role_id
+        WHERE r.name = 'ROLE_ADMIN'
+        )
+        AND u.active = CASE WHEN #{active} = true THEN true WHEN #{active} = false THEN false ELSE u.active END
+    </select>
+</mapper>
