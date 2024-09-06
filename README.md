@@ -14,7 +14,7 @@
 ### Features
 - User can add/update/view/remove restaurant tables
 - User can add/update/view/remove reservations
-- Each reservation is valid for 2 hours (on creation status is set to <strong>CONFIRMED</strong> and upon completion it is set to <strong>COMPLETED</strong>)
+- Each reservation is valid for 2 hours (on creation status is set to <strong>ARRIVED</strong> and upon completion it is set to <strong>COMPLETED</strong>)
 - Reservation start time and end time are set
 - A job runs every minute to check if reservation end time has been surpassed, upon which the reservation status is set to <strong>COMPLETED</strong> and table status is set to <strong>AVAILABLE</strong>.
 - When new reservation is added, check is to assign the best available table, such that the seating capacity is greater or equal to the requested pax, and the table with the least number of seating capacity meeting this criteria is selected.

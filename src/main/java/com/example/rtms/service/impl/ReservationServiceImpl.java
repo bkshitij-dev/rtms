@@ -51,7 +51,7 @@ public class ReservationServiceImpl implements ReservationService {
                 .customerEmail(request.getCustomerEmail())
                 .customerContact(request.getCustomerContact())
                 .pax(request.getPax())
-                .status(ReservationStatus.CONFIRMED)
+                .status(ReservationStatus.ARRIVED)
                 .reservationRequestTime(dateTime)
                 .reservationStartTime(dateTime)
                 .reservationEndTime(DateUtil.getDateTimeOffset(dateTime, 2)) // add two hours

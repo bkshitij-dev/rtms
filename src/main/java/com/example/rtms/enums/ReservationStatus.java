@@ -5,5 +5,5 @@ package com.example.rtms.enums;
  * @created 01-Sep-2024
  */
 public enum ReservationStatus {
-    CONFIRMED, NO_SHOW, COMPLETED, CANCELLED
+    RESERVED, ARRIVED, NO_SHOW, CANCELLED, COMPLETED
 }
