@@ -7,7 +7,7 @@ import com.example.rtms.dto.response.ApiResponse;
 import com.example.rtms.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Authentication", description = "Apis related to Authentication")
-@AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
 public class AuthController extends BaseController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Operation(summary = "Login")
     @PostMapping("/login")

@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
  * @author Kshitij
  * @created 01-Sep-2024
  */
-@RestController
 @Tag(name = "Reservations", description = "Apis related to Reservations")
+@RestController
 @RequestMapping("/api/v1/reservations")
 @RequiredArgsConstructor
 public class ReservationController extends BaseController {

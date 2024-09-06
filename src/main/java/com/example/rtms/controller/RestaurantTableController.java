@@ -20,8 +20,8 @@ import java.time.LocalDateTime;
  * @author Kshitij
  * @created 01-Sep-2024
  */
-@RestController
 @Tag(name = "Restaurant Tables", description = "Apis related to Restaurant Tables")
+@RestController
 @RequestMapping("/api/v1/restaurant-tables")
 @RequiredArgsConstructor
 public class RestaurantTableController extends BaseController {

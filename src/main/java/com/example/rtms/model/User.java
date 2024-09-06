@@ -34,6 +34,10 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "active")
+    @Builder.Default
+    private boolean active = true;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id",
