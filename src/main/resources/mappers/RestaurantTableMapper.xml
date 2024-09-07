@@ -92,7 +92,6 @@
             LEFT JOIN
                 reservations r ON rt.id = r.restaurant_table_id
                 AND r.reservation_end_time > ft.reference_time
-            WHERE r.tactive = true
             GROUP BY
                 rt.id, rt.seating_capacity, ft.reference_time
         )
