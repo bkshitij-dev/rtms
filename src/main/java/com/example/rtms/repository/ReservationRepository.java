@@ -18,4 +18,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query(value = "SELECT * FROM reservations WHERE CURRENT_TIMESTAMP > reservation_end_time::timestamp " +
             "AND status != 'COMPLETED'", nativeQuery = true)
     List<Reservation> findAllTimeExceeded();
+
 }

@@ -98,37 +98,7 @@ public class ReservationRequestServiceImpl implements ReservationRequestService 
     }
 
     @Override
-    public List<ReservationRequestResponseDto> list() {
-        return null;
-    }
-
-    @Override
-    public ReservationRequestResponseDto get(Long id) {
-        return null;
-    }
-
-    @Override
-    public void update(Long id, ReservationRequestRequestDto request) {
-
-    }
-
-    @Override
     public void updateStatus(Long id, StatusUpdateRequestDto request) {
         reservationRequestMapper.updateStatus(id, request.getStatus());
-    }
-
-    @Override
-    public void delete(Long id) {
-
-    }
-
-    @Override
-    public void completeReservation() {
-
-    }
-
-    @Override
-    public long count() {
-        return 0;
     }
 }

@@ -8,6 +8,8 @@
         rt.seating_capacity as seatingCapacity,
         rt.status as status
         FROM restaurant_tables rt
+        WHERE rt.active = CASE WHEN #{active} = true THEN true WHEN #{active} = false THEN false ELSE rt.active END
+        ORDER BY rt.id
     </select>
 
     <select id="get" resultType="com.example.rtms.dto.response.RestaurantTableResponseDto">
@@ -46,6 +48,24 @@
         ]]>
     </select>
 
+    <select id="getTableFitForPaxOnReshuffle" resultType="java.lang.Long">
+        <![CDATA[
+            SELECT rt.id
+            FROM restaurant_tables rt
+            LEFT JOIN reservations r ON rt.id = r.restaurant_table_id
+            LEFT JOIN reservation_requests rr ON rr.id = r.reservation_request_id
+            WHERE rt.active = true
+            AND (
+                r.id IS NULL
+                OR rr.status NOT IN ('ASSIGNED')
+                OR r.reservation_end_time <= #{timestamp}
+            )
+            AND rt.seating_capacity >= #{pax}
+            ORDER BY rt.seating_capacity
+            LIMIT 1
+        ]]>
+    </select>
+
     <select id="getNearestFreeTable" resultType="java.lang.String">
         <![CDATA[
         WITH future_time AS (
@@ -72,7 +92,7 @@
             LEFT JOIN
                 reservations r ON rt.id = r.restaurant_table_id
                 AND r.reservation_end_time > ft.reference_time
-            WHERE r.active = true
+            WHERE r.tactive = true
             GROUP BY
                 rt.id, rt.seating_capacity, ft.reference_time
         )

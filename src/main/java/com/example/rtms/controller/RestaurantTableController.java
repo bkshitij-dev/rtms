@@ -39,9 +39,9 @@ public class RestaurantTableController extends BaseController {
 
     @Operation(summary = "List all restaurant table")
     @GetMapping
-    public ResponseEntity<ApiResponse> list() {
-        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_RETRIEVE, restaurantTableService.list()),
-                HttpStatus.OK);
+    public ResponseEntity<ApiResponse> list(@RequestParam(name = "active", required = false) Boolean active) {
+        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_RETRIEVE,
+                restaurantTableService.list(active)), HttpStatus.OK);
     }
 
     @Operation(summary = "Fetch restaurant table by id")
@@ -76,15 +76,4 @@ public class RestaurantTableController extends BaseController {
         restaurantTableService.toggleActive(id, request);
         return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_UPDATE), HttpStatus.OK);
     }
-
-//    @Operation(summary = "Get earliest free table")
-//    @PostMapping("/earliest-free")
-//    public ResponseEntity<ApiResponse> getEarliestFreeTable(@RequestBody ReservationRequestDto request) {
-//        LocalDateTime dateTime = LocalDateTime.now();
-//        if (request.getReservationRequestTime() != null) {
-//            dateTime = DateUtil.getDateTime(request.getReservationRequestTime());
-//        }
-//        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_RETRIEVE,
-//                restaurantTableService.getNearestFreeTable(dateTime, request.getPax())), HttpStatus.OK);
-//    }
 }

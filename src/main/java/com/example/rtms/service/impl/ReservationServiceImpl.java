@@ -2,6 +2,7 @@ package com.example.rtms.service.impl;
 
 import com.example.rtms.dto.request.ReservationRequestDto;
 import com.example.rtms.dto.request.StatusUpdateRequestDto;
+import com.example.rtms.dto.response.ReservationDetailResponseDto;
 import com.example.rtms.dto.response.ReservationResponseDto;
 import com.example.rtms.enums.ReservationRequestStatus;
 import com.example.rtms.enums.ReservationStatus;
@@ -22,6 +23,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
@@ -66,12 +68,12 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<ReservationResponseDto> list() {
+    public List<ReservationDetailResponseDto> list() {
         return reservationMapper.list();
     }
 
     @Override
-    public ReservationResponseDto get(Long id) {
+    public ReservationDetailResponseDto get(Long id) {
         return reservationMapper.get(id);
     }
 
@@ -114,5 +116,15 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public long count() {
         return reservationRepository.count();
+    }
+
+    @Override
+    public void reshuffleTables() {
+        List<ReservationDetailResponseDto> confirmedReservations = reservationMapper.getConfirmedReservations();
+        confirmedReservations.forEach(cr -> {
+            Long tableId = restaurantTableService.getTableFitForPaxOnReshuffle(
+                    Timestamp.valueOf(cr.getReservationStartTime()), cr.getPax());
+            reservationMapper.updateReservationTable(cr.getReservationId(), tableId);
+        });
     }
 }

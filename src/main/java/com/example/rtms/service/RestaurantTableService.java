@@ -4,6 +4,7 @@ import com.example.rtms.dto.request.ActiveInactiveRequestDto;
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
 import com.example.rtms.dto.response.RestaurantTableResponseDto;
 import com.example.rtms.dto.response.WaitTimeResponseDto;
+import com.example.rtms.model.RestaurantTable;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ public interface RestaurantTableService {
 
     void create(RestaurantTableRequestDto request);
 
-    List<RestaurantTableResponseDto> list();
+    List<RestaurantTableResponseDto> list(Boolean active);
 
     RestaurantTableResponseDto get(Long id);
 
@@ -29,6 +30,8 @@ public interface RestaurantTableService {
 
     Long getTableFitForPax(Timestamp timestamp, Integer pax);
 
+    Long getTableFitForPaxOnReshuffle(Timestamp timestamp, Integer pax);
+
     void updateStatus(Long id, String status);
 
     void updateStatusFromReservation(Long reservationId, String status);
@@ -36,4 +39,6 @@ public interface RestaurantTableService {
     WaitTimeResponseDto getEarliestFreeTable(LocalDateTime requestedTime, Integer pax);
 
     long count();
+
+    List<RestaurantTable> listAvailableTables();
 }

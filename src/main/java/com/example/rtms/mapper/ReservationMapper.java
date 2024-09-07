@@ -2,6 +2,7 @@ package com.example.rtms.mapper;
 
 import com.example.rtms.dto.request.ReservationRequestDto;
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
+import com.example.rtms.dto.response.ReservationDetailResponseDto;
 import com.example.rtms.dto.response.ReservationResponseDto;
 import com.example.rtms.dto.response.RestaurantTableResponseDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -16,11 +17,15 @@ import java.util.List;
 @Mapper
 public interface ReservationMapper {
 
-    List<ReservationResponseDto> list();
+    List<ReservationDetailResponseDto> list();
 
-    ReservationResponseDto get(@Param("id") Long id);
+    ReservationDetailResponseDto get(@Param("id") Long id);
 
     void update(@Param("id") Long id, @Param("request") ReservationRequestDto request);
 
     void updateStatus(@Param("id") Long id, @Param("status") String status);
+
+    List<ReservationDetailResponseDto> getConfirmedReservations();
+
+    void updateReservationTable(@Param("id") Long id, @Param("tableId") Long tableId);
 }

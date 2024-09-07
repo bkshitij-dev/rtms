@@ -16,13 +16,15 @@ import java.util.List;
 @Mapper
 public interface RestaurantTableMapper {
 
-    List<RestaurantTableResponseDto> list();
+    List<RestaurantTableResponseDto> list(Boolean active);
 
     RestaurantTableResponseDto get(@Param("id") Long id);
 
     void update(@Param("id") Long id, @Param("request") RestaurantTableRequestDto request);
 
     Long getTableFitForPax(@Param("timestamp") Timestamp timestamp, @Param("pax") Integer pax);
+
+    Long getTableFitForPaxOnReshuffle(@Param("timestamp") Timestamp timestamp, @Param("pax") Integer pax);
 
     void updateStatus(@Param("id") Long id, @Param("status") String status);
 

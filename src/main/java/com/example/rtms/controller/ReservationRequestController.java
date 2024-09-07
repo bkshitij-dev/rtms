@@ -32,45 +32,4 @@ public class ReservationRequestController extends BaseController {
         reservationRequestService.create(request);
         return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_SAVE), HttpStatus.OK);
     }
-
-//    @Operation(summary = "List all reservation requests")
-//    @GetMapping
-//    @PreAuthorize("hasRole('STAFF')")
-//    public ResponseEntity<ApiResponse> list() {
-//        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_RETRIEVE, reservationRequestService.list()),
-//                HttpStatus.OK);
-//    }
-//
-//    @Operation(summary = "Fetch reservation request by id")
-//    @GetMapping("/{id}")
-//    @PreAuthorize("hasRole('STAFF')")
-//    public ResponseEntity<ApiResponse> get(@PathVariable("id") Long id) {
-//        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_RETRIEVE, reservationService.get(id)),
-//                HttpStatus.OK);
-//    }
-//
-//    @Operation(summary = "Update existing reservation request")
-//    @PutMapping("/{id}")
-//    @PreAuthorize("hasRole('STAFF')")
-//    public ResponseEntity<ApiResponse> update(@PathVariable("id") Long id,
-//                                              @RequestBody ReservationRequestRequestDto request) {
-//        reservationRequestService.update(id, request);
-//        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_UPDATE), HttpStatus.OK);
-//    }
-//
-//    @Operation(summary = "Update existing reservation status")
-//    @PutMapping("/{id}/updateStatus")
-//    @PreAuthorize("hasRole('STAFF')")
-//    public ResponseEntity<ApiResponse> updateStatus(@PathVariable("id") Long id,
-//                                                    @RequestBody StatusUpdateRequestDto request) {
-//        reservationService.updateStatus(id, request);
-//        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_UPDATE), HttpStatus.OK);
-//    }
-//
-//    @Operation(summary = "Remove existing reservation")
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<ApiResponse> delete(@PathVariable("id") Long id) {
-//        reservationService.delete(id);
-//        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_REMOVE), HttpStatus.OK);
-//    }
 }

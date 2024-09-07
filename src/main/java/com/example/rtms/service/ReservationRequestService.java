@@ -16,17 +16,5 @@ public interface ReservationRequestService {
 
     void create(ReservationRequestRequestDto request);
 
-    List<ReservationRequestResponseDto> list();
-
-    ReservationRequestResponseDto get(Long id);
-
-    void update(Long id, ReservationRequestRequestDto request);
-
     void updateStatus(Long id, StatusUpdateRequestDto request);
-
-    void delete(Long id);
-
-    void completeReservation();
-
-    long count();
 }

@@ -45,8 +45,8 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
     }
 
     @Override
-    public List<RestaurantTableResponseDto> list() {
-        return restaurantTableMapper.list();
+    public List<RestaurantTableResponseDto> list(Boolean active) {
+        return restaurantTableMapper.list(active);
     }
 
     @Override
@@ -78,6 +78,11 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
     }
 
     @Override
+    public Long getTableFitForPaxOnReshuffle(Timestamp timestamp, Integer pax) {
+        return restaurantTableMapper.getTableFitForPaxOnReshuffle(timestamp, pax);
+    }
+
+    @Override
     public void updateStatus(Long id, String status) {
         restaurantTableMapper.updateStatus(id, status);
     }
@@ -101,5 +106,10 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
     @Override
     public long count() {
         return restaurantTableRepository.count();
+    }
+
+    @Override
+    public List<RestaurantTable> listAvailableTables() {
+        return restaurantTableRepository.listAvailableTables();
     }
 }

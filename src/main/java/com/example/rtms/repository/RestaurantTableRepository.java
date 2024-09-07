@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface RestaurantTableRepository extends JpaRepository<RestaurantTable, Long> {
 
@@ -17,4 +19,7 @@ public interface RestaurantTableRepository extends JpaRepository<RestaurantTable
             "FROM restaurant_tables " +
             "WHERE id = ?1", nativeQuery = true)
     boolean isOccupied(Long tableId);
+
+    @Query(value = "SELECT * FROM restaurant_tables WHERE status = 'AVAILABLE' and active = true", nativeQuery = true)
+    List<RestaurantTable> listAvailableTables();
 }

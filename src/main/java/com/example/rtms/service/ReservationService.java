@@ -2,6 +2,7 @@ package com.example.rtms.service;
 
 import com.example.rtms.dto.request.ReservationRequestDto;
 import com.example.rtms.dto.request.StatusUpdateRequestDto;
+import com.example.rtms.dto.response.ReservationDetailResponseDto;
 import com.example.rtms.dto.response.ReservationResponseDto;
 
 import java.util.List;
@@ -14,9 +15,9 @@ public interface ReservationService {
 
     void create(ReservationRequestDto request);
 
-    List<ReservationResponseDto> list();
+    List<ReservationDetailResponseDto> list();
 
-    ReservationResponseDto get(Long id);
+    ReservationDetailResponseDto get(Long id);
 
     void update(Long id, ReservationRequestDto request);
 
@@ -27,4 +28,6 @@ public interface ReservationService {
     void completeReservation();
 
     long count();
+
+    void reshuffleTables();
 }

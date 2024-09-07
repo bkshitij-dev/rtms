@@ -17,7 +17,7 @@
         INNER JOIN reservation_requests rr ON r.reservation_request_id = rr.id
     </select>
 
-    <select id="get" resultType="com.example.rtms.dto.response.ReservationResponseDto">
+    <select id="get" resultType="com.example.rtms.dto.response.ReservationDetailResponseDto">
         SELECT
         r.id as reservationId,
         r.reservation_start_time as reservationStartTime,
@@ -46,6 +46,28 @@
     <update id = "updateStatus">
         UPDATE reservations
         SET status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getConfirmedReservations" resultType="com.example.rtms.dto.response.ReservationDetailResponseDto">
+        SELECT
+        r.id as reservationId,
+        r.reservation_start_time as reservationStartTime,
+        r.reservation_end_time as reservationEndTime,
+        r.status as reservationStatus,
+        rr.customer_name as customerName,
+        rr.customer_email as customerEmail,
+        rr.customer_contact as customerContact,
+        rr.pax as pax,
+        rr.status as reservationRequestStatus
+        FROM reservations r
+        INNER JOIN reservation_requests rr ON r.reservation_request_id = rr.id
+        WHERE r.status = 'CONFIRMED'
+    </select>
+
+    <update id = "updateReservationTable">
+        UPDATE reservations
+        SET restaurant_table_id = #{tableId}
         WHERE id = #{id}
     </update>
 </mapper>
