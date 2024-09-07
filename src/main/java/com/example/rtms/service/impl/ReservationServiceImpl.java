@@ -122,7 +122,7 @@ public class ReservationServiceImpl implements ReservationService {
     public void reshuffleTables() {
         List<ReservationDetailResponseDto> confirmedReservations = reservationMapper.getConfirmedReservations();
         confirmedReservations.forEach(cr -> {
-            Long tableId = restaurantTableService.getTableFitForPaxOnReshuffle(
+            Long tableId = restaurantTableService.getTableFitForPax(
                     Timestamp.valueOf(cr.getReservationStartTime()), cr.getPax());
             reservationMapper.updateReservationTable(cr.getReservationId(), tableId);
         });

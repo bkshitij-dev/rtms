@@ -78,11 +78,6 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
     }
 
     @Override
-    public Long getTableFitForPaxOnReshuffle(Timestamp timestamp, Integer pax) {
-        return restaurantTableMapper.getTableFitForPaxOnReshuffle(timestamp, pax);
-    }
-
-    @Override
     public void updateStatus(Long id, String status) {
         restaurantTableMapper.updateStatus(id, status);
     }

@@ -30,8 +30,6 @@ public interface RestaurantTableService {
 
     Long getTableFitForPax(Timestamp timestamp, Integer pax);
 
-    Long getTableFitForPaxOnReshuffle(Timestamp timestamp, Integer pax);
-
     void updateStatus(Long id, String status);
 
     void updateStatusFromReservation(Long reservationId, String status);
