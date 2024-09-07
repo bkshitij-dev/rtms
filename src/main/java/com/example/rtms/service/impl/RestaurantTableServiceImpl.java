@@ -3,6 +3,7 @@ package com.example.rtms.service.impl;
 import com.example.rtms.dto.request.ActiveInactiveRequestDto;
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
 import com.example.rtms.dto.response.RestaurantTableResponseDto;
+import com.example.rtms.dto.response.WaitTimeResponseDto;
 import com.example.rtms.enums.TableStatus;
 import com.example.rtms.exception.AppException;
 import com.example.rtms.mapper.RestaurantTableMapper;
@@ -72,8 +73,8 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
     }
 
     @Override
-    public Long getTableFitForPax(Integer pax) {
-        return restaurantTableMapper.getTableFitForPax(pax);
+    public Long getTableFitForPax(Timestamp timestamp, Integer pax) {
+        return restaurantTableMapper.getTableFitForPax(timestamp, pax);
     }
 
     @Override
@@ -87,11 +88,14 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
     }
 
     @Override
-    public String getNearestFreeTable(LocalDateTime requestedTime, Integer pax) {
+    public WaitTimeResponseDto getEarliestFreeTable(LocalDateTime requestedTime, Integer pax) {
         Timestamp timestamp = Timestamp.valueOf(requestedTime);
         String timeString = restaurantTableMapper.getNearestFreeTable(timestamp, pax);
-        return DateUtil.getTimeDifference(DateUtil.getDateTimeString(requestedTime, DateUtil.ISO_FULL_DATE_TIME_FORMAT),
-                timeString);
+        return WaitTimeResponseDto.builder()
+                .availableTime(timeString)
+                .waitTime(DateUtil.getTimeDifference(DateUtil.getDateTimeString(requestedTime, DateUtil.ISO_FULL_DATE_TIME_FORMAT),
+                        timeString))
+                .build();
     }
 
     @Override

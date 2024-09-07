@@ -8,8 +8,11 @@ import com.example.rtms.enums.TableStatus;
 import com.example.rtms.exception.AppException;
 import com.example.rtms.mapper.ReservationMapper;
 import com.example.rtms.model.Reservation;
+import com.example.rtms.model.ReservationRequest;
 import com.example.rtms.model.RestaurantTable;
 import com.example.rtms.repository.ReservationRepository;
+import com.example.rtms.repository.ReservationRequestRepository;
+import com.example.rtms.repository.RestaurantTableRepository;
 import com.example.rtms.service.ReservationService;
 import com.example.rtms.service.RestaurantTableService;
 import com.example.rtms.util.DateUtil;
@@ -31,34 +34,33 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final RestaurantTableService restaurantTableService;
     private final ReservationRepository reservationRepository;
+    private final ReservationRequestRepository reservationRequestRepository;
+    private final RestaurantTableRepository restaurantTableRepository;
     private final ReservationMapper reservationMapper;
 
     @Override
     @Transactional
     public void create(ReservationRequestDto request) {
-        LocalDateTime dateTime = DateUtil.getDateTimeLocalDate(LocalDateTime.now());
-        if (request.getReservationRequestTime() != null) {
-            dateTime = DateUtil.getDateTime(request.getReservationRequestTime());
-        }
-        Long tableId = restaurantTableService.getTableFitForPax(request.getPax());
-        if (tableId == null) {
-            String earliestAvailableTime = restaurantTableService.getNearestFreeTable(dateTime, request.getPax());
-            throw new AppException("No free table available for requested time. " +
-                    "Estimated wait time is: " + earliestAvailableTime);
-        }
+        ReservationRequest reservationRequest = reservationRequestRepository.findById(request.getReservationRequestId())
+                .orElseThrow(() -> new AppException("Reservation request not found"));
+
+        RestaurantTable restaurantTable = restaurantTableRepository.findById(request.getRestaurantTableId())
+                .orElseThrow(() -> new AppException("Restaurant table not found"));
+
+        LocalDateTime startDateTime = DateUtil.getDateTime(request.getReservationStartTime());
         Reservation reservation = Reservation.builder()
-                .customerName(request.getCustomerName())
-                .customerEmail(request.getCustomerEmail())
-                .customerContact(request.getCustomerContact())
-                .pax(request.getPax())
-                .status(ReservationStatus.ARRIVED)
-                .reservationRequestTime(dateTime)
-                .reservationStartTime(dateTime)
-                .reservationEndTime(DateUtil.getDateTimeOffset(dateTime, 2)) // add two hours
+                .reservationRequest(reservationRequest)
+                .restaurantTable(restaurantTable)
+                .reservationStartTime(startDateTime)
+                .reservationEndTime(DateUtil.getDateTimeOffset(startDateTime, 2))
+                .status(ReservationStatus.valueOf(request.getStatus()))
                 .build();
-        reservation.setRestaurantTable(RestaurantTable.builder().id(tableId).build());
         reservationRepository.save(reservation);
-        restaurantTableService.updateStatus(tableId, TableStatus.OCCUPIED.name());
+        TableStatus tableStatus = TableStatus.OCCUPIED;
+        if (startDateTime.isAfter(LocalDateTime.now())) {
+            tableStatus = TableStatus.RESERVED;
+        }
+        restaurantTableService.updateStatus(request.getRestaurantTableId(), tableStatus.name());
     }
 
     @Override

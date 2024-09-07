@@ -7,6 +7,7 @@ package com.example.rtms.enums;
 public enum TableStatus {
 
     AVAILABLE,
+    RESERVED,
     OCCUPIED
 }
 

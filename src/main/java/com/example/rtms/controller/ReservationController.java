@@ -25,12 +25,12 @@ public class ReservationController extends BaseController {
 
     private final ReservationService reservationService;
 
-    @Operation(summary = "Create new reservation")
-    @PostMapping
-    public ResponseEntity<ApiResponse> create(@RequestBody ReservationRequestDto request) {
-        reservationService.create(request);
-        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_SAVE), HttpStatus.OK);
-    }
+//    @Operation(summary = "Create new reservation")
+//    @PostMapping
+//    public ResponseEntity<ApiResponse> create(@RequestBody ReservationRequestDto request) {
+//        reservationService.create(request);
+//        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_SAVE), HttpStatus.OK);
+//    }
 
     @Operation(summary = "List all reservations")
     @GetMapping

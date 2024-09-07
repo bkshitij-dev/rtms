@@ -3,7 +3,9 @@ package com.example.rtms.service;
 import com.example.rtms.dto.request.ActiveInactiveRequestDto;
 import com.example.rtms.dto.request.RestaurantTableRequestDto;
 import com.example.rtms.dto.response.RestaurantTableResponseDto;
+import com.example.rtms.dto.response.WaitTimeResponseDto;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,13 +27,13 @@ public interface RestaurantTableService {
 
     void toggleActive(Long id, ActiveInactiveRequestDto request);
 
-    Long getTableFitForPax(Integer pax);
+    Long getTableFitForPax(Timestamp timestamp, Integer pax);
 
     void updateStatus(Long id, String status);
 
     void updateStatusFromReservation(Long reservationId, String status);
 
-    String getNearestFreeTable(LocalDateTime requestedTime, Integer pax);
+    WaitTimeResponseDto getEarliestFreeTable(LocalDateTime requestedTime, Integer pax);
 
     long count();
 }

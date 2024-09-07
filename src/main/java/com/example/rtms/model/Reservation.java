@@ -28,32 +28,23 @@ public class Reservation {
     @SequenceGenerator(name = "reservation_seq", sequenceName = "reservation_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "customer_name", nullable = false)
-    private String customerName;
-
-    @Column(name = "customer_email", nullable = false)
-    private String customerEmail;
-
-    @Column(name = "customer_contact", nullable = false)
-    private String customerContact;
-
-    @Column(name = "pax", nullable = false)
-    private Integer pax;
-
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "restaurant_table_id", nullable = false, foreignKey = @ForeignKey(name = "fk_reservation_restauranttable"))
-    private RestaurantTable restaurantTable;
-
-    @Column(name = "reservation_request_time", nullable = false)
-    private LocalDateTime reservationRequestTime;
 
     @Column(name = "reservation_start_time")
     private LocalDateTime reservationStartTime;
 
     @Column(name = "reservation_end_time")
     private LocalDateTime reservationEndTime;
+
+    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "reservation_request_id", referencedColumnName = "id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_reservation_resservationrequest"))
+    private ReservationRequest reservationRequest;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "restaurant_table_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_reservation_restauranttable"))
+    private RestaurantTable restaurantTable;
 }

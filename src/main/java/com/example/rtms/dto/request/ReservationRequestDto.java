@@ -16,10 +16,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ReservationRequestDto {
 
-    private String customerName;
-    private String customerEmail;
-    private String customerContact;
-    private Integer pax;
-    private String reservationRequestTime;
+    private Long reservationRequestId;
+    private Long restaurantTableId;
+    private String reservationStartTime;
     private String status;
 }

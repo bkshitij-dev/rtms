@@ -3,6 +3,7 @@ package com.example.rtms.security;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -44,6 +45,7 @@ public class AppSecurityConfig {
                 .authorizeHttpRequests(req ->
                         req
                                 .requestMatchers(WHITE_LIST_APIS).permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/v1/reservation-requests").permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

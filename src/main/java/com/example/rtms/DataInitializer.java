@@ -40,9 +40,9 @@ public class DataInitializer implements ApplicationRunner {
         if (restaurantTableService.count() <= 0) {
             createRestaurantTables();
         }
-        if (reservationService.count() <= 0) {
-            createReservations();
-        }
+//        if (reservationService.count() <= 0) {
+//            createReservations();
+//        }
     }
 
     private void createRoles() {
@@ -145,76 +145,76 @@ public class DataInitializer implements ApplicationRunner {
     }
 
     private void createReservations() {
-        ReservationRequestDto reservation1 = ReservationRequestDto.builder()
-                .customerName("Customer 1")
-                .customerEmail("customer1@email.com")
-                .customerContact("1234567890")
-                .pax(2)
-                .build();
-        reservationService.create(reservation1);
-
-        ReservationRequestDto reservation2 = ReservationRequestDto.builder()
-                .customerName("Customer 2")
-                .customerEmail("customer2@email.com")
-                .customerContact("1234567890")
-                .pax(5)
-                .build();
-        reservationService.create(reservation2);
-
-        ReservationRequestDto reservation3 = ReservationRequestDto.builder()
-                .customerName("Customer 3")
-                .customerEmail("customer3@email.com")
-                .customerContact("1234567890")
-                .pax(3)
-                .build();
-        reservationService.create(reservation3);
-
-        ReservationRequestDto reservation4 = ReservationRequestDto.builder()
-                .customerName("Customer 4")
-                .customerEmail("customer4@email.com")
-                .customerContact("1234567890")
-                .pax(5)
-                .build();
-        reservationService.create(reservation4);
-
-        ReservationRequestDto reservation5 = ReservationRequestDto.builder()
-                .customerName("Customer 5")
-                .customerEmail("customer5@email.com")
-                .customerContact("1234567890")
-                .pax(6)
-                .build();
-        reservationService.create(reservation5);
-
-        ReservationRequestDto reservation6 = ReservationRequestDto.builder()
-                .customerName("Customer 6")
-                .customerEmail("customer6@email.com")
-                .customerContact("1234567890")
-                .pax(2)
-                .build();
-        reservationService.create(reservation6);
-
-        ReservationRequestDto reservation7 = ReservationRequestDto.builder()
-                .customerName("Customer 7")
-                .customerEmail("customer7@email.com")
-                .customerContact("1234567890")
-                .pax(3)
-                .build();
-        reservationService.create(reservation7);
-
-        ReservationRequestDto reservation8 = ReservationRequestDto.builder()
-                .customerName("Customer 8")
-                .customerEmail("customer8@email.com")
-                .customerContact("1234567890")
-                .pax(4)
-                .build();
-        reservationService.create(reservation8);
-
-        ReservationRequestDto reservation9 = ReservationRequestDto.builder()
-                .customerName("Customer 9")
-                .customerEmail("customer9@email.com")
-                .customerContact("1234567890")
-                .pax(8)
-                .build();
-        reservationService.create(reservation9);
+//        ReservationRequestDto reservation1 = ReservationRequestDto.builder()
+//                .customerName("Customer 1")
+//                .customerEmail("customer1@email.com")
+//                .customerContact("1234567890")
+//                .pax(2)
+//                .build();
+//        reservationService.create(reservation1);
+//
+//        ReservationRequestDto reservation2 = ReservationRequestDto.builder()
+//                .customerName("Customer 2")
+//                .customerEmail("customer2@email.com")
+//                .customerContact("1234567890")
+//                .pax(5)
+//                .build();
+//        reservationService.create(reservation2);
+//
+//        ReservationRequestDto reservation3 = ReservationRequestDto.builder()
+//                .customerName("Customer 3")
+//                .customerEmail("customer3@email.com")
+//                .customerContact("1234567890")
+//                .pax(3)
+//                .build();
+//        reservationService.create(reservation3);
+//
+//        ReservationRequestDto reservation4 = ReservationRequestDto.builder()
+//                .customerName("Customer 4")
+//                .customerEmail("customer4@email.com")
+//                .customerContact("1234567890")
+//                .pax(5)
+//                .build();
+//        reservationService.create(reservation4);
+//
+//        ReservationRequestDto reservation5 = ReservationRequestDto.builder()
+//                .customerName("Customer 5")
+//                .customerEmail("customer5@email.com")
+//                .customerContact("1234567890")
+//                .pax(6)
+//                .build();
+//        reservationService.create(reservation5);
+//
+//        ReservationRequestDto reservation6 = ReservationRequestDto.builder()
+//                .customerName("Customer 6")
+//                .customerEmail("customer6@email.com")
+//                .customerContact("1234567890")
+//                .pax(2)
+//                .build();
+//        reservationService.create(reservation6);
+//
+//        ReservationRequestDto reservation7 = ReservationRequestDto.builder()
+//                .customerName("Customer 7")
+//                .customerEmail("customer7@email.com")
+//                .customerContact("1234567890")
+//                .pax(3)
+//                .build();
+//        reservationService.create(reservation7);
+//
+//        ReservationRequestDto reservation8 = ReservationRequestDto.builder()
+//                .customerName("Customer 8")
+//                .customerEmail("customer8@email.com")
+//                .customerContact("1234567890")
+//                .pax(4)
+//                .build();
+//        reservationService.create(reservation8);
+//
+//        ReservationRequestDto reservation9 = ReservationRequestDto.builder()
+//                .customerName("Customer 9")
+//                .customerEmail("customer9@email.com")
+//                .customerContact("1234567890")
+//                .pax(8)
+//                .build();
+//        reservationService.create(reservation9);
     }
 }

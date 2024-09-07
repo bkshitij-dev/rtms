@@ -7,21 +7,18 @@ import lombok.NoArgsConstructor;
 
 /*
  * @author Kshitij
- * @created 01-Sep-2024
+ * @created 06-Sep-2024
  */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReservationResponseDto {
+public class ReservationRequestResponseDto {
 
     private Long id;
-    private ReservationRequestResponseDto reservationRequest;
-    private RestaurantTableResponseDto restaurantTable;
-    private String reservationStartTime;
-    private String reservationEndTime;
+    private String customerName;
+    private String customerEmail;
+    private String customerContact;
+    private Integer pax;
     private String status;
-
 }
-

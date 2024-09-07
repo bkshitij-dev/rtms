@@ -29,12 +29,21 @@
     </update>
 
     <select id="getTableFitForPax" resultType="java.lang.Long">
-        SELECT rt.id
-        FROM restaurant_tables rt
-        WHERE rt.seating_capacity >= #{pax}
-        AND rt.status = 'AVAILABLE'
-        ORDER BY rt.seating_capacity ASC
-        LIMIT 1
+        <![CDATA[
+            SELECT rt.id
+            FROM restaurant_tables rt
+            LEFT JOIN reservations r ON rt.id = r.restaurant_table_id
+            LEFT JOIN reservation_requests rr ON rr.id = r.reservation_request_id
+            WHERE rt.active = true
+            AND (
+                r.id IS NULL
+                OR rr.status NOT IN ('ASSIGNED', 'PENDING', 'ACKNOWLEDGED')
+                OR r.reservation_end_time <= #{timestamp}
+            )
+            AND rt.seating_capacity >= #{pax}
+            ORDER BY rt.seating_capacity
+            LIMIT 1
+        ]]>
     </select>
 
     <select id="getNearestFreeTable" resultType="java.lang.String">
@@ -62,8 +71,8 @@
                 future_time ft
             LEFT JOIN
                 reservations r ON rt.id = r.restaurant_table_id
-                AND r.status IN ('RESERVED', 'ARRIVED', 'NO_SHOW', 'CANCELLED', 'COMPLETED')
                 AND r.reservation_end_time > ft.reference_time
+            WHERE r.active = true
             GROUP BY
                 rt.id, rt.seating_capacity, ft.reference_time
         )
