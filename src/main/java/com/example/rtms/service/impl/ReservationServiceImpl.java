@@ -3,10 +3,12 @@ package com.example.rtms.service.impl;
 import com.example.rtms.dto.request.ReservationRequestDto;
 import com.example.rtms.dto.request.StatusUpdateRequestDto;
 import com.example.rtms.dto.response.ReservationResponseDto;
+import com.example.rtms.enums.ReservationRequestStatus;
 import com.example.rtms.enums.ReservationStatus;
 import com.example.rtms.enums.TableStatus;
 import com.example.rtms.exception.AppException;
 import com.example.rtms.mapper.ReservationMapper;
+import com.example.rtms.mapper.ReservationRequestMapper;
 import com.example.rtms.model.Reservation;
 import com.example.rtms.model.ReservationRequest;
 import com.example.rtms.model.RestaurantTable;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 /*
  * @author Kshitij
@@ -37,6 +40,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final ReservationRequestRepository reservationRequestRepository;
     private final RestaurantTableRepository restaurantTableRepository;
     private final ReservationMapper reservationMapper;
+    private final ReservationRequestMapper reservationRequestMapper;
 
     @Override
     @Transactional
@@ -56,11 +60,9 @@ public class ReservationServiceImpl implements ReservationService {
                 .status(ReservationStatus.valueOf(request.getStatus()))
                 .build();
         reservationRepository.save(reservation);
-        TableStatus tableStatus = TableStatus.OCCUPIED;
-        if (startDateTime.isAfter(LocalDateTime.now())) {
-            tableStatus = TableStatus.RESERVED;
+        if (!startDateTime.isAfter(LocalDateTime.now())) {
+            restaurantTableService.updateStatus(request.getRestaurantTableId(), TableStatus.OCCUPIED.name());
         }
-        restaurantTableService.updateStatus(request.getRestaurantTableId(), tableStatus.name());
     }
 
     @Override
@@ -82,9 +84,15 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     public void updateStatus(Long id, StatusUpdateRequestDto request) {
         reservationMapper.updateStatus(id, request.getStatus());
-        if (request.getStatus().equals(ReservationStatus.CANCELLED.name())
-                || request.getStatus().equals(ReservationStatus.NO_SHOW.name())
-                || request.getStatus().equals(ReservationStatus.COMPLETED.name())) {
+        ReservationStatus reservationStatus = ReservationStatus.valueOf(request.getStatus());
+        if (List.of(ReservationStatus.NO_SHOW, ReservationStatus.CANCELLED).contains(reservationStatus)) {
+            reservationRequestMapper.updateStatusFromReservation(id, ReservationRequestStatus.CANCELLED.name());
+            restaurantTableService.updateStatusFromReservation(id, TableStatus.AVAILABLE.name());
+        } else if (reservationStatus.equals(ReservationStatus.ARRIVED)) {
+            reservationRequestMapper.updateStatusFromReservation(id, ReservationRequestStatus.ASSIGNED.name());
+            restaurantTableService.updateStatusFromReservation(id, TableStatus.OCCUPIED.name());
+        } else if (reservationStatus.equals(ReservationStatus.COMPLETED)) {
+            reservationRequestMapper.updateStatusFromReservation(id, ReservationRequestStatus.COMPLETED.name());
             restaurantTableService.updateStatusFromReservation(id, TableStatus.AVAILABLE.name());
         }
     }

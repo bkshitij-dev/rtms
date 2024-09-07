@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.rtms.mapper.ReservationRequestMapper">
+    <update id = "updateStatus">
+        UPDATE reservation_requests
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <update id = "updateStatusFromReservation">
+        UPDATE reservation_requests
+        SET status = #{status}
+        FROM reservations r
+        WHERE reservation_requests.id = r.reservation_request_id
+        AND r.id = #{reservationId}
+    </update>
+</mapper>

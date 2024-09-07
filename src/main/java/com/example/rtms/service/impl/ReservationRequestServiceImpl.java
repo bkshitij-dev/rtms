@@ -13,6 +13,7 @@ import com.example.rtms.dto.response.WaitTimeResponseDto;
 import com.example.rtms.enums.ReservationRequestStatus;
 import com.example.rtms.enums.ReservationStatus;
 import com.example.rtms.exception.AppException;
+import com.example.rtms.mapper.ReservationRequestMapper;
 import com.example.rtms.model.ReservationRequest;
 import com.example.rtms.repository.ReservationRequestRepository;
 import com.example.rtms.service.ReservationRequestService;
@@ -34,35 +35,20 @@ public class ReservationRequestServiceImpl implements ReservationRequestService 
     private final RestaurantTableService restaurantTableService;
     private final ReservationService reservationService;
     private final ReservationRequestRepository reservationRequestRepository;
+    private final ReservationRequestMapper reservationRequestMapper;
 
     @Override
     @Transactional
     public void create(ReservationRequestRequestDto request) {
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        LocalDateTime requestedDateTime = currentDateTime;
-        if (request.getReservationRequestTime() != null) {
-            requestedDateTime = DateUtil.getDateTime(request.getReservationRequestTime());
-            if (requestedDateTime.isBefore(currentDateTime)) {
-                throw new AppException("Requested time is in the past");
-            }
-        }
-
-        Long tableId = restaurantTableService.getTableFitForPax(Timestamp.valueOf(requestedDateTime), request.getPax());
-
-        if (tableId == null) {
-            WaitTimeResponseDto waitTimeResponse = restaurantTableService.getEarliestFreeTable(
-                    requestedDateTime, request.getPax());
-            throw new AppException("No free table available for requested time. Next table available at: "
-                    + waitTimeResponse.getAvailableTime()
-                    + ". Estimated wait time is: " + waitTimeResponse.getWaitTime());
-        }
+        LocalDateTime requestedDateTime = getReservationTime(request.getReservationRequestTime());
 
         ReservationRequestStatus status = ReservationRequestStatus.ASSIGNED;
         ReservationStatus reservationStatus = ReservationStatus.ARRIVED;
         if (requestedDateTime.isAfter(LocalDateTime.now())) {
-            status = ReservationRequestStatus.PENDING;
-            reservationStatus = ReservationStatus.REQUESTED;
+            status = ReservationRequestStatus.ACKNOWLEDGED;
+            reservationStatus = ReservationStatus.CONFIRMED;
         }
+
         ReservationRequest reservationRequest = ReservationRequest.builder()
                 .customerName(request.getCustomerName())
                 .customerEmail(request.getCustomerEmail())
@@ -72,6 +58,7 @@ public class ReservationRequestServiceImpl implements ReservationRequestService 
                 .status(status)
                 .build();
 
+        Long tableId = getAppropriateTable(requestedDateTime, reservationRequest, request.getPax());
         ReservationRequest reservationReq = reservationRequestRepository.save(reservationRequest);
         ReservationRequestDto requestDto = ReservationRequestDto.builder()
                 .reservationRequestId(reservationReq.getId())
@@ -80,6 +67,34 @@ public class ReservationRequestServiceImpl implements ReservationRequestService 
                 .status(reservationStatus.name())
                 .build();
         reservationService.create(requestDto);
+    }
+
+    private LocalDateTime getReservationTime(String reservationRequestTime) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime requestedDateTime = currentDateTime;
+        if (reservationRequestTime != null) {
+            requestedDateTime = DateUtil.getDateTime(reservationRequestTime);
+            if (requestedDateTime.isBefore(currentDateTime)) {
+                throw new AppException("Requested time is in the past");
+            }
+        }
+        return requestedDateTime;
+    }
+
+    private Long getAppropriateTable(LocalDateTime requestedDateTime, ReservationRequest reservationRequest, int pax) {
+        Long tableId = restaurantTableService.getTableFitForPax(Timestamp.valueOf(requestedDateTime), pax);
+
+        if (tableId == null) {
+            reservationRequest.setStatus(ReservationRequestStatus.PENDING);
+            reservationRequestRepository.save(reservationRequest);
+            WaitTimeResponseDto waitTimeResponse = restaurantTableService.getEarliestFreeTable(
+                    requestedDateTime, pax);
+            throw new AppException("No free table available for requested time. Next table available at: "
+                    + waitTimeResponse.getAvailableTime()
+                    + ". Estimated wait time is: " + waitTimeResponse.getWaitTime());
+        }
+
+        return tableId;
     }
 
     @Override
@@ -99,7 +114,7 @@ public class ReservationRequestServiceImpl implements ReservationRequestService 
 
     @Override
     public void updateStatus(Long id, StatusUpdateRequestDto request) {
-
+        reservationRequestMapper.updateStatus(id, request.getStatus());
     }
 
     @Override

@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.rtms.mapper.ReservationMapper">
-    <select id="list" resultType="com.example.rtms.dto.response.ReservationResponseDto">
+
+    <select id="list" resultType="com.example.rtms.dto.response.ReservationDetailResponseDto">
         SELECT
-        r.id as id,
-        r.customer_name as customerName,
-        r.customer_email as customerEmail,
-        r.customer_contact as customerContact,
-        r.pax as pax,
-        r.status as status
+        r.id as reservationId,
+        r.reservation_start_time as reservationStartTime,
+        r.reservation_end_time as reservationEndTime,
+        r.status as reservationStatus,
+        rr.customer_name as customerName,
+        rr.customer_email as customerEmail,
+        rr.customer_contact as customerContact,
+        rr.pax as pax,
+        rr.status as reservationRequestStatus
         FROM reservations r
+        INNER JOIN reservation_requests rr ON r.reservation_request_id = rr.id
     </select>
 
     <select id="get" resultType="com.example.rtms.dto.response.ReservationResponseDto">
         SELECT
-        r.id as id,
-        r.customer_name as customerName,
-        r.customer_email as customerEmail,
-        r.customer_contact as customerContact,
-        r.pax as pax,
-        r.status as status
+        r.id as reservationId,
+        r.reservation_start_time as reservationStartTime,
+        r.reservation_end_time as reservationEndTime,
+        r.status as reservationStatus,
+        rr.customer_name as customerName,
+        rr.customer_email as customerEmail,
+        rr.customer_contact as customerContact,
+        rr.pax as pax,
+        rr.status as reservationRequestStatus
         FROM reservations r
+        INNER JOIN reservation_requests rr ON r.reservation_request_id = rr.id
         WHERE r.id = #{id}
     </select>
 

@@ -25,15 +25,9 @@ public class ReservationController extends BaseController {
 
     private final ReservationService reservationService;
 
-//    @Operation(summary = "Create new reservation")
-//    @PostMapping
-//    public ResponseEntity<ApiResponse> create(@RequestBody ReservationRequestDto request) {
-//        reservationService.create(request);
-//        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_SAVE), HttpStatus.OK);
-//    }
-
     @Operation(summary = "List all reservations")
     @GetMapping
+    @PreAuthorize("hasRole('STAFF')")
     public ResponseEntity<ApiResponse> list() {
         return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_RETRIEVE, reservationService.list()),
                 HttpStatus.OK);
@@ -41,6 +35,7 @@ public class ReservationController extends BaseController {
 
     @Operation(summary = "Fetch reservation by id")
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('STAFF')")
     public ResponseEntity<ApiResponse> get(@PathVariable("id") Long id) {
         return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_RETRIEVE, reservationService.get(id)),
                 HttpStatus.OK);
@@ -48,6 +43,7 @@ public class ReservationController extends BaseController {
 
     @Operation(summary = "Update existing reservation")
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('STAFF')")
     public ResponseEntity<ApiResponse> update(@PathVariable("id") Long id,
                                               @RequestBody ReservationRequestDto request) {
         reservationService.update(id, request);
@@ -65,6 +61,7 @@ public class ReservationController extends BaseController {
 
     @Operation(summary = "Remove existing reservation")
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('STAFF')")
     public ResponseEntity<ApiResponse> delete(@PathVariable("id") Long id) {
         reservationService.delete(id);
         return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_REMOVE), HttpStatus.OK);

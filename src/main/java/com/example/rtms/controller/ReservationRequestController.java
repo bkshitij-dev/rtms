@@ -6,6 +6,7 @@ package com.example.rtms.controller;
  */
 
 import com.example.rtms.constant.AppConstants;
+import com.example.rtms.dto.request.ReservationRequestDto;
 import com.example.rtms.dto.request.ReservationRequestRequestDto;
 import com.example.rtms.dto.response.ApiResponse;
 import com.example.rtms.service.ReservationRequestService;
@@ -14,10 +15,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Reservation Requests", description = "Apis related to Reservation Requests")
 @RestController
@@ -34,25 +33,28 @@ public class ReservationRequestController extends BaseController {
         return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_SAVE), HttpStatus.OK);
     }
 
-//    @Operation(summary = "List all reservations")
+//    @Operation(summary = "List all reservation requests")
 //    @GetMapping
+//    @PreAuthorize("hasRole('STAFF')")
 //    public ResponseEntity<ApiResponse> list() {
-//        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_RETRIEVE, reservationService.list()),
+//        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_RETRIEVE, reservationRequestService.list()),
 //                HttpStatus.OK);
 //    }
 //
-//    @Operation(summary = "Fetch reservation by id")
+//    @Operation(summary = "Fetch reservation request by id")
 //    @GetMapping("/{id}")
+//    @PreAuthorize("hasRole('STAFF')")
 //    public ResponseEntity<ApiResponse> get(@PathVariable("id") Long id) {
 //        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_RETRIEVE, reservationService.get(id)),
 //                HttpStatus.OK);
 //    }
 //
-//    @Operation(summary = "Update existing reservation")
+//    @Operation(summary = "Update existing reservation request")
 //    @PutMapping("/{id}")
+//    @PreAuthorize("hasRole('STAFF')")
 //    public ResponseEntity<ApiResponse> update(@PathVariable("id") Long id,
-//                                              @RequestBody ReservationRequestDto request) {
-//        reservationService.update(id, request);
+//                                              @RequestBody ReservationRequestRequestDto request) {
+//        reservationRequestService.update(id, request);
 //        return new ResponseEntity<>(successResponse(AppConstants.SUCCESS_UPDATE), HttpStatus.OK);
 //    }
 //
